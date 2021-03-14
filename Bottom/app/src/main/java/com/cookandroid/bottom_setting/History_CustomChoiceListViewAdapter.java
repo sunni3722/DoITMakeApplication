@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class History_CustomChoiceListViewAdapter extends BaseAdapter {
 
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
-    private ArrayList<List_Listview_Item> listViewItemListList = new ArrayList<List_Listview_Item>() ;
+    private ArrayList<List_ListviewItem> listViewItemListList = new ArrayList<List_ListviewItem>() ;
 
     // 체크박스
     private boolean mClick = false;
@@ -49,7 +49,7 @@ public class History_CustomChoiceListViewAdapter extends BaseAdapter {
         ImageView isDoneImageView = (ImageView) convertView.findViewById(R.id.isDone) ;
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
-        List_Listview_Item listListViewItem = listViewItemListList.get(position);
+        List_ListviewItem listListViewItem = listViewItemListList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
         goalTextView.setText(listListViewItem.getGoal());
@@ -77,7 +77,7 @@ public class History_CustomChoiceListViewAdapter extends BaseAdapter {
 
     // 아이템 데이터 추가를 위한 함수.
     public void addItem(String goal, String sdate, String edate, String etc, Drawable isDone) {
-        List_Listview_Item item = new List_Listview_Item();
+        List_ListviewItem item = new List_ListviewItem();
 
         item.setGoal(goal);
         item.setSdate(sdate);
@@ -90,7 +90,7 @@ public class History_CustomChoiceListViewAdapter extends BaseAdapter {
 
     // 아이템 데이터 삭제를 위한 함수. (미완성)
     public void removeItem(int num) {
-        List_Listview_Item item = new List_Listview_Item();
+        List_ListviewItem item = new List_ListviewItem();
 
 
         listViewItemListList.remove(item);

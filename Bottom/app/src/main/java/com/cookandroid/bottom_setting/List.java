@@ -38,6 +38,7 @@ public class List extends Fragment {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
     }
+
     @SuppressLint("UseCompatLoadingForDrawables")
     @Nullable
     @Override
@@ -158,7 +159,7 @@ public class List extends Fragment {
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 if (selectAllButton.getVisibility() == View.GONE) {
                     // get item
-                    List_Listview_Item item = (List_Listview_Item) parent.getItemAtPosition(position);
+                    List_ListviewItem item = (List_ListviewItem) parent.getItemAtPosition(position);
 
                     String Title = item.getGoal();
                     Intent intent = new Intent(getActivity(), List_Detail.class);

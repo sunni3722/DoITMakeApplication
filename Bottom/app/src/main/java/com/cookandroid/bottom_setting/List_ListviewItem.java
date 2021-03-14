@@ -2,7 +2,7 @@ package com.cookandroid.bottom_setting;
 
 import android.graphics.drawable.Drawable;
 
-public class List_Listview_Item {
+public class List_ListviewItem {
 
     private String goalStr;
     private String sdateStr;

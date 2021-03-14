@@ -16,7 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class Find_password extends AppCompatActivity {
+public class Another_Account_Find_Password extends AppCompatActivity {
 
     Button set_password;
     private FirebaseAuth firebaseAuth ;
@@ -49,12 +49,12 @@ public class Find_password extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()){
-                                Toast.makeText(Find_password.this,"이메일을 보냈습니다", Toast.LENGTH_LONG).show();
+                                Toast.makeText(Another_Account_Find_Password.this,"이메일을 보냈습니다", Toast.LENGTH_LONG).show();
                                 finish();
                                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                             }
                             else{
-                                Toast.makeText(Find_password.this,"메일을 보내지 못했습니다", Toast.LENGTH_LONG).show();
+                                Toast.makeText(Another_Account_Find_Password.this,"메일을 보내지 못했습니다", Toast.LENGTH_LONG).show();
 
                             }
 

@@ -202,7 +202,7 @@ public class List_SelectGoal extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Log.e("json", "json : " + list.toString());
+                    Log.e("json", "list.json : " + list.toString());
 
                     Intent intent = new Intent(getApplication(),List.class);
                     setResult(Activity.RESULT_OK,intent);

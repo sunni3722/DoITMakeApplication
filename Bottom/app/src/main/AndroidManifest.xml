@@ -27,10 +27,10 @@
         <activity android:name=".Another_Version"/>
         <activity android:name=".List_SelectGoal" />
         <activity android:name=".SignUp"/>
-        <activity android:name=".Logout"/>
+        <activity android:name=".Another_Logout"/>
         <activity android:name=".List_Detail"/>
-        <activity android:name=".Another_account"/>
-        <activity android:name=".Find_password"/>
+        <activity android:name=".Another_Account"/>
+        <activity android:name=".Another_Account_Find_Password"/>
     </application>
 
 </manifest>

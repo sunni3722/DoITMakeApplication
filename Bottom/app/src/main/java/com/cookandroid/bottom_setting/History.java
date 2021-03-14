@@ -3,7 +3,6 @@ package com.cookandroid.bottom_setting;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +62,7 @@ public class History extends Fragment {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 // get item
-                List_Listview_Item item = (List_Listview_Item) parent.getItemAtPosition(position);
+                List_ListviewItem item = (List_ListviewItem) parent.getItemAtPosition(position);
 
                 String Title = item.getGoal();
                 Intent intent = new Intent(getActivity(), List_Detail.class);

@@ -9,9 +9,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.nhn.android.naverlogin.OAuthLogin;
 import com.nhn.android.naverlogin.data.OAuthLoginState;
 
-public class Logout_GlobalAuthHelper {
+public class Another_Logout_GlobalAuthHelper {
 
-    public static void accountLogout(Context context, Logout activity) {
+    public static void accountLogout(Context context, Another_Logout activity) {
         if (OAuthLoginState.OK.equals(OAuthLogin.getInstance().getState(context))) {
             OAuthLogin.getInstance().logout(context);
 
