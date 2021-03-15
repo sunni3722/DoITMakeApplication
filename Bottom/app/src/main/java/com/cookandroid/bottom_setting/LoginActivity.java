@@ -144,11 +144,6 @@ public class LoginActivity extends AppCompatActivity {
                             long expiresAt = mOAuthLoginModule.getExpiresAt(mContext);
                             String tokenType = mOAuthLoginModule.getTokenType(mContext);
 
-                            Log.i("LoginData","accessToken : "+ accessToken);
-                            Log.i("LoginData","refreshToken : "+ refreshToken);
-                            Log.i("LoginData","expiresAt : "+ expiresAt);
-                            Log.i("LoginData","tokenType : "+ tokenType);
-
                             PreferenceManager.setString(getApplicationContext(), "accessToken", accessToken);
 
                             Intent intent = new Intent(mContext, MainActivity.class);

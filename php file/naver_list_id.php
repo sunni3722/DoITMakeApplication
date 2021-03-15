@@ -1,31 +1,81 @@
-<?php 
+ <?php  
+error_reporting(E_ALL); 
+ini_set('display_errors',1); 
 
-    error_reporting(E_ALL); 
-    ini_set('display_errors',1); 
+include('navercon.php');
 
-    include('navercon.php');
-        
 
-    $stmt = $con->prepare('select * from naver_list_id');
+
+//POST 값을 읽어온다.
+$id=isset($_POST['id']) ? $_POST['id'] : '';
+$android = strpos($_SERVER['HTTP_USER_AGENT'], "Android");
+
+
+if ($id != "" ){ 
+
+    $sql="select * from naver_list_id where id='$id'";
+    $stmt = $con->prepare($sql);
     $stmt->execute();
+ 
+    if ($stmt->rowCount() == 0){
 
-    if ($stmt->rowCount() > 0)
-    {
-        $data = array(); 
+        echo "null";
+    }
+	else{
 
-        while($row=$stmt->fetch(PDO::FETCH_ASSOC))
-        {
-            extract($row);
-    
+   		$data = array(); 
+
+        while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+
+        	extract($row);
+
             array_push($data, 
-                array('id'=>$id,
-	  'list_id'=>$list_id,
+                array('id'=>$row["id"],
+	  'id'=>$row["id"],
+                'list_id'=>$row["list_id"]
             ));
         }
 
-        header('Content-Type: application/json; charset=utf8');
-        $json = json_encode(array("naver_list_id"=>$data), JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE);
-        echo $json;
-    }
 
+        if (!$android) {
+            echo "<pre>"; 
+            print_r($data); 
+            echo '</pre>';
+        }else
+        {
+            header('Content-Type: application/json; charset=utf8');
+            $json = json_encode(array("naver_profile"=>$data), JSON_PRETTY_PRINT+JSON_UNESCAPED_UNICODE);
+            echo $json;
+        }
+    }
+}
+else {
+    echo "검색할 id를 입력하세요 ";
+}
+
+?>
+
+
+
+<?php
+
+$android = strpos($_SERVER['HTTP_USER_AGENT'], "Android");
+
+if (!$android){
+?>
+
+<html>
+   <body>
+   
+      <form action="<?php $_PHP_SELF ?>" method="POST">
+         ID: <input type = "text" name = "id" />
+         <input type = "submit" />
+      </form>
+   
+   </body>
+</html>
+<?php
+}
+
+   
 ?>

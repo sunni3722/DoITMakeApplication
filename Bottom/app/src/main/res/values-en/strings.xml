@@ -59,13 +59,14 @@
     <string name="Save">SAVE</string>
     <string name="Cancel">CANCEL</string>
 
-
+    <!--Naver Login-->
     <string name="naver_client_id">S1lQJB5lwu6g49kxQ6FE</string>
     <string name="naver_client_secret">GsDryj6kDC</string>
     <string name="naver_client_name">Project</string>
 
     <string name="naver_google">Or</string>
 
-    <string name="web_IP">222.121.213.33</string>
+    <!--Web Server-->
+    <string name="web_IP">222.121.211.78</string>
 
 </resources>

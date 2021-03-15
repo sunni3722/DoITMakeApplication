@@ -116,10 +116,6 @@ public class MainActivity extends AppCompatActivity {
                     id = (String) profile.getString("id");
                     gender = (String) profile.getString("gender");
                     nickname = (String) profile.getString("nickname");
-                    // 추후 데이터를 Web Server에서 가져오는 게 될 경우 PreferenceManager 사용할 필요 X
-                    PreferenceManager.setString(getApplicationContext(), "id", id);
-                    PreferenceManager.setString(getApplicationContext(), "gender", gender);
-                    PreferenceManager.setString(getApplicationContext(), "nickname", nickname);
                 } else {
                 }
             } catch (JSONException e) {

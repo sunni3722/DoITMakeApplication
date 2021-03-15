@@ -17,15 +17,15 @@ import java.net.ProtocolException;
 import java.net.URL;
 
 // Bring Data From WebServer
-class selectDatabase extends AsyncTask<String, Void, String> {
-    private static String TAG = "naver_profile";
+class selectDatabase_list_id extends AsyncTask<String, Void, String> {
+    private static String TAG = "naver_list_id";
     private String url1;
     private ContentValues values1;
     String result1;
     Context context;
 
-    public selectDatabase(String IP, ContentValues contentValues, Context context) {
-        this.url1 = "http://" + IP + "/naver_profile.php";;
+    public selectDatabase_list_id(String IP, ContentValues contentValues, Context context) {
+        this.url1 = "http://" + IP + "/naver_list_id.php";;
         this.values1 = contentValues;
         this.context = context;
     }
