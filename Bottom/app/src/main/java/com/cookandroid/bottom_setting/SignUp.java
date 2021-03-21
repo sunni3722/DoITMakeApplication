@@ -39,6 +39,7 @@ public class SignUp extends AppCompatActivity {
     private String id;
     private String password;
     private String name;
+    private String level;
 
 
     @Override
@@ -61,6 +62,7 @@ public class SignUp extends AppCompatActivity {
                 id=editTextEmail.getText().toString();
                 name=editTextName.getText().toString();
                 password=editTextPassword.getText().toString();
+                level="0";
 
                 if (!id.equals("")&&!name.equals("")&&!password.equals("")) {
                     // 이메일과 비밀번호가 공백이 아닌 경우
@@ -114,7 +116,7 @@ public class SignUp extends AppCompatActivity {
         Map<String, Object> postValues = null;
 
         if(add){
-            FirebasePost user = new FirebasePost(id,name,password);
+            FirebasePost user = new FirebasePost(id,name,password,level);
             postValues = user.toMap();
         }
         childUpdates.put("/user/" + name, postValues);

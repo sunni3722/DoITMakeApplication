@@ -14,13 +14,39 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import org.json.JSONException;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import static com.cookandroid.bottom_setting.MainActivity.List_DB;
 
 public class History extends Fragment {
+
+    // Bundle에서 ID정보 받아오기
+    String id;
+    String find;
+    Bundle bundle;
+
+    // ID & List_ID 받아오기
+    String[] List_ID;
+    String final_list_id;
+    int length;
+
+    //List_ID로 List Data 받아오기
+    selectDatabase_list data_list[];
+    String find_list[];
+    String Title[];
+    String List_Term_Start[];
+    String List_Term_End[];
+    String List_Time_Start[];
+    String List_Time_End[];
+    String List_Level[];
+    String List_Category[];
+    String List_Detail[];
+    String List_Degree_Goal[];
 
     @Nullable
     @Override
@@ -46,7 +72,123 @@ public class History extends Fragment {
         // 리스트뷰 참조 및 Adapter달기
         listview = (ListView) view.findViewById(R.id.listview2);
         listview.setAdapter(adapter);
-        load_values(adapter);
+
+        bundle = getArguments();
+
+        String IP = getString(R.string.web_IP);
+
+        // Naver 로그인인 경우
+        if (bundle != null) {
+            id = bundle.getString("id");
+
+            // 이용자의 고유 Naver ID 값을 이용해 list_id 정보 불러오기
+            selectDatabase_list_id list_id = new selectDatabase_list_id(IP, null, getContext());
+            try {
+                find = list_id.execute(id).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            // List ID JSON Parsing
+            try {
+                if (!find.equals("null")) {
+                    Translate_JSON_List_ID user_list_id = new Translate_JSON_List_ID(find);
+                    List_ID = user_list_id.getList_ID();
+                    length = user_list_id.getlength();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                List_ID = null;
+                length = 0;
+            }
+            // List ID로 배열로 List Data 정보 불러오기
+            if (List_ID != null) {
+                final_list_id = List_ID[length - 1];
+                data_list = new selectDatabase_list[length];
+                find_list = new String[length];
+                Title = new String[length];
+                List_Term_Start = new String[length];
+                List_Term_End = new String[length];
+                List_Time_Start = new String[length];
+                List_Time_End = new String[length];
+                List_Level = new String[length];
+                List_Category = new String[length];
+                List_Detail = new String[length];
+                List_Degree_Goal = new String[length];
+                Translate_JSON_List user_list_data[] = new Translate_JSON_List[length];
+                for (int i = 0; i < length; i++) {
+                    data_list[i] = new selectDatabase_list(IP, null, getContext());
+                    try {
+                        find_list[i] = data_list[i].execute(List_ID[i]).get();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        user_list_data[i] = new Translate_JSON_List(find_list[i]);
+                        Title[i] = user_list_data[i].getTitle();
+                        List_Term_Start[i] = user_list_data[i].getList_Term_Start();
+                        List_Term_End[i] = user_list_data[i].getList_Term_End();
+                        List_Time_Start[i] = user_list_data[i].getList_Time_Start();
+                        List_Time_End[i] = user_list_data[i].getList_Time_End();
+                        List_Level[i] = user_list_data[i].getList_Level();
+                        List_Category[i] = user_list_data[i].getList_Category();
+                        List_Detail[i] = user_list_data[i].getList_Detail();
+                        List_Degree_Goal[i] = user_list_data[i].getList_Degree_Goal();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Title[i] = "";
+                        List_Term_Start[i] = "";
+                        List_Term_End[i] = "";
+                        List_Time_Start[i] = "";
+                        List_Time_End[i] = "";
+                        List_Level[i] = "";
+                        List_Category[i] = "";
+                        List_Detail[i] = "";
+                        List_Degree_Goal[i] = "";
+                    }
+                    float total = 0;
+
+                    String strFormat = "yyyy/MM/dd";
+                    Date date = new Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat(strFormat);
+                    String strToday = sdf.format(date);
+                    {
+                        try {
+                            Date startDate = sdf.parse(List_Term_Start[i]);
+                            Date endDate = sdf.parse(List_Term_End[i]);
+                            Date today = sdf.parse(strToday);
+
+                            float diffDay = (startDate.getTime() - endDate.getTime()) / (24 * 60 * 60 * 1000) * -1;
+                            float nowDay = (today.getTime() - endDate.getTime()) / (24 * 60 * 60 * 1000) * -1;
+                            total = (nowDay / diffDay) * 100;
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    String sign = "";
+                    double per = (100 - (int) total);
+                    if (per > 100) {
+                        sign = "성공";
+                    }
+                    else {
+                        sign = "실패";
+                    }
+
+                    // 제목, 시작기간, 끝난 기간, 디테일 , 퍼센트
+                    if (total > 100 || total < 0) {
+                        adapter.addItem(Title[i], List_Term_Start[i], List_Term_End[i], List_Detail[i], sign);
+                    }
+                }
+            }
+        }
+        // Naver  Login이 아닌 경우
+        else {
+            load_values(adapter);
+        }
+
         /*
         // 첫 번째 아이템 추가.
         adapter.addItem("project1", "2020.09.21.M", "2022.03.20.S", "c++",

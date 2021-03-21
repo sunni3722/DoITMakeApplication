@@ -46,6 +46,7 @@
     <string name="SelectLanguage">언어를 선택하세요.</string>
     <string name="Select">선택</string>
     <string name="SelectTheme">테마를 선택하세요.</string>
+    <string name="SelectGender">성별을 선택하세요.</string>
 
     <!--SelectGoal View Contents-->
     <string name="InputGoal">목표를 입력하세요.</string>
@@ -66,7 +67,7 @@
     <string name="naver_google">Or</string>
 
     <!--Web Server-->
-    <string name="web_IP">222.121.211.78</string>
+    <string name="web_IP">121.143.11.75</string>
 
 
 </resources>

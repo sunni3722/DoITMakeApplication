@@ -24,7 +24,6 @@ public class Another_Logout extends AppCompatActivity {
 
 
     }
-
   
     //로그아웃
     Button.OnClickListener mLogoutListener = new Button.OnClickListener() {

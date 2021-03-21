@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
             bundle.putString("id", id);
             list.setArguments(bundle);
             home.setArguments(bundle);
+            history.setArguments(bundle);
             another.setArguments(bundle);
         }
 

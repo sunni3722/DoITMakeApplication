@@ -31,6 +31,7 @@
         <activity android:name=".List_Detail"/>
         <activity android:name=".Another_Account"/>
         <activity android:name=".Another_Account_Find_Password"/>
+        <activity android:name=".Another_Account_Set_Nickname"/>
     </application>
 
 </manifest>

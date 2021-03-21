@@ -152,6 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                             intent.putExtra("expiresAt", expiresAt);
                             intent.putExtra("tokenType", tokenType);
                             startActivity(intent);
+                            finish();
 
                         } else {
                             String errorCode = mOAuthLoginModule

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,9 @@ import org.w3c.dom.Text;
 import java.util.concurrent.ExecutionException;
 
 public class Another extends Fragment implements View.OnClickListener{
+
+    ImageView ProfilePhoto;
+
     // ProfileBox 텍스트 뷰
     TextView ProfileBox;
 
@@ -25,8 +29,8 @@ public class Another extends Fragment implements View.OnClickListener{
     String find = "";
 
     // Profile Info
-    String nickname = null;
-    String gender = null;
+    public static String nickname = null;
+    public static String gender = null;
 
     public static Another newInstance() {
         return new Another();
@@ -82,6 +86,10 @@ public class Another extends Fragment implements View.OnClickListener{
 
         View fv = inflater.inflate(R.layout.another, container, false);
 
+        // ProfilePhoto에 Profile 정보 표시
+        ProfilePhoto = fv.findViewById(R.id.imageView);
+        // ProfilePhoto.setBackground(getResources().getDrawable(R.drawable.o));
+
         // ProfileBox에 Profile 정보 표시
         ProfileBox = fv.findViewById(R.id.textView);
         ProfileBox.setText(nickname + " / " + gender);
@@ -92,6 +100,14 @@ public class Another extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
 
+    }
+
+    public static void setGender (String newGender){
+        gender = newGender;
+    }
+
+    public static void setNickname (String newNickname){
+        nickname = newNickname;
     }
 
     private void setChildFragment(Fragment child) {
