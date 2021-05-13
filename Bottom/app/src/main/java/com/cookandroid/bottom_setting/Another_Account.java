@@ -58,8 +58,8 @@ public class Another_Account extends AppCompatActivity {
 
                     // 프로필 사진 변경
                     case 0:
-                        // Intent set_profile_photo = new Intent(Another_Account.this, Another_Account_Set_Photo.class);
-                        // startActivity(set_profile_photo);
+                        Intent set_profile_photo = new Intent(Another_Account.this, Another_Account_Set_Photo.class);
+                        startActivity(set_profile_photo);
                         break;
 
                     // 닉네임 변경

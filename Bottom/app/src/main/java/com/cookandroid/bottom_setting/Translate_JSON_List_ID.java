@@ -7,13 +7,13 @@ import org.json.JSONObject;
 
 public class Translate_JSON_List_ID {
 
-    int length;
-    JSONObject Object;
-    String info;
-    String[] info_array;
-    JSONObject[] cleanObject;
-    String ID[];
-    String List_ID[];
+    private int length;
+    private JSONObject Object;
+    private String info;
+    private String[] info_array;
+    private JSONObject[] cleanObject;
+    private String ID[];
+    private String List_ID[];
 
     Translate_JSON_List_ID(String a) throws JSONException {
         try {

@@ -7,14 +7,14 @@ import org.json.JSONObject;
 
 public class Translate_JSON_NaverProfile {
 
-    JSONObject Object;
-    String info;
-    JSONObject cleanObject;
-    String ID;
-    String Gender;
-    String Nickname;
-    Integer Level;
-    Double Exp;
+    private JSONObject Object;
+    private String info;
+    private JSONObject cleanObject;
+    private String ID;
+    private String Gender;
+    private String Nickname;
+    private Integer Level;
+    private Double Exp;
 
     Translate_JSON_NaverProfile(String a) throws JSONException {
         try {

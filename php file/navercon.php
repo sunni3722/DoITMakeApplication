@@ -1,8 +1,8 @@
 <?php
 
     $host = 'localhost';
-    $username = # MySQL 계정 아이디
-    $password = # MySQL 계정 패스워드
+    $username = ; # MySQL 계정 아이디
+    $password = ; # MySQL 계정 패스워드
     $dbname = 'profile';  # DATABASE 이름
 
 

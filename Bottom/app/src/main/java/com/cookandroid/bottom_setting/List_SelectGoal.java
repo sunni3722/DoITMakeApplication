@@ -38,6 +38,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import static com.cookandroid.bottom_setting.MainActivity.List_DB;
 
@@ -54,9 +55,16 @@ public class List_SelectGoal extends AppCompatActivity {
 
     // 네이버 로그인 정보
     private String naver_id;
+    private long long_naver_id;
+    private long long_naver_list_count;
     private String naver_list_count;
     private long final_list_id;
     private String insert_final_list_id;
+
+    // ID & List_ID 받아오기
+    String[] List_ID;
+    String find;
+    int length;
 
     Calendar myCalendar1 = Calendar.getInstance(); //끝나는 날짜
     //똑같이 날짜 받아오기
@@ -101,11 +109,44 @@ public class List_SelectGoal extends AppCompatActivity {
         Button cancle=(Button)findViewById(R.id.cancel);
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
+        // WebServer와 통신하여 list ID 확인
+        String IP = getString(R.string.web_IP);
+
         // intent로 정보 받아 naver 로그인인지 확인
         Intent intent_main = new Intent(this.getIntent());
         naver_id = intent_main.getStringExtra("id");
-        naver_list_count = intent_main.getStringExtra("final_list_id");
 
+        if (naver_id != null) {
+            // 이용자의 고유 Naver ID 값을 이용해 list_id 정보 불러오기
+            selectDatabase_list_id list_id = new selectDatabase_list_id(IP, null, getApplicationContext());
+            try {
+                find = list_id.execute(naver_id).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            // List ID JSON Parsing
+            try {
+                if (!find.equals("null")) {
+                    Translate_JSON_List_ID user_list_id = new Translate_JSON_List_ID(find);
+                    List_ID = user_list_id.getList_ID();
+                    length = user_list_id.getlength();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                List_ID = null;
+                length = 0;
+            }
+            if (List_ID != null){
+                naver_list_count = List_ID[length - 1];
+            }
+            else {
+                long_naver_id = Long.parseLong(naver_id);
+                long_naver_list_count = long_naver_id * 1000;
+                naver_list_count = Long.toString(long_naver_list_count);
+            }
+        }
         //시작 날짜 클릭 시
         editstartdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -261,7 +302,9 @@ public class List_SelectGoal extends AppCompatActivity {
                             String spare = naver_id + "0000";
                             final_list_id = Long.parseLong(spare);
                         }
-                        final_list_id = Long.parseLong(naver_list_count);
+                        else {
+                            final_list_id = Long.parseLong(naver_list_count);
+                        }
                         final_list_id = final_list_id + 1;
                         insert_final_list_id = Long.toString(final_list_id);
                         // list_id upload

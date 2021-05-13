@@ -54,6 +54,10 @@ public class List extends Fragment {
     String List_Detail[];
     String List_Degree_Goal[];
 
+    // 삭제시 사용할 WebServer 통신 객체
+    DeleteDataBase_List_id delete_list_id;
+    DeleteDataBase_List delete_list;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +95,8 @@ public class List extends Fragment {
         // Naver 로그인인 경우
         if (bundle != null) {
             id = bundle.getString("id");
+
+            intent.putExtra("id", id);
 
             // 이용자의 고유 Naver ID 값을 이용해 list_id 정보 불러오기
             selectDatabase_list_id list_id = new selectDatabase_list_id(IP, null, getContext());
@@ -189,9 +195,6 @@ public class List extends Fragment {
                 }
 
             }
-            //intent로 Naver id 정보를 넘겨주어 네이보 로그인임을 알림
-            intent.putExtra("id", id);
-            intent.putExtra("final_list_id", final_list_id);
 
         }
 
@@ -204,10 +207,11 @@ public class List extends Fragment {
         ImageButton addButton = (ImageButton) view.findViewById(R.id.add);
         addButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                startActivityForResult(intent, 0);
 
                 Refresh_Fragment();
                 //startActivity(intent);//액티비티 띄우기
+
+                startActivityForResult(intent, 0);
             }
 
 
@@ -221,20 +225,40 @@ public class List extends Fragment {
                 SparseBooleanArray checkedItems = listview.getCheckedItemPositions();
                 SQLiteDatabase db = List_DB.getWritableDatabase();
                 int count = adapter.getCount() ;
-                //adapter.it
-                for (int i = count-1; i >= 0; i--) {
-                    if (checkedItems.get(i)) {
-                        //adapter.getItem(i).getGoal();
-                        String SQLdelete="DELETE FROM List_20_11_22 WHERE TITLE = '"+adapter.getItem(i).getGoal()+"'";
-                        Log.d("index",adapter.getItem(i).getGoal());
-                        db.execSQL(SQLdelete);
 
-                        //if(listview.isItemChecked(i);
+                // Naver Login일 경우 웹서버와 통신하여 삭제 처리
+                if (bundle != null) {
 
-                        //adapter.removeItem(1);
+                    String IP = getString(R.string.web_IP);
+
+                    for (int i = 0; i < count; i++) {
+                        if (checkedItems.get(i)) {
+                            delete_list_id = new DeleteDataBase_List_id(IP, null, getContext());
+                            delete_list = new DeleteDataBase_List(IP, null, getContext());
+
+                            delete_list_id.execute(List_ID[i]);
+                            delete_list.execute(List_ID[i]);
+
+                        }
                     }
                 }
-                db.close();
+                // Naver Login 이외의 경우 삭제 처리
+                else {
+                    //adapter.it
+                    for (int i = count - 1; i >= 0; i--) {
+                        if (checkedItems.get(i)) {
+                            //adapter.getItem(i).getGoal();
+                            String SQLdelete = "DELETE FROM List_20_11_22 WHERE TITLE = '" + adapter.getItem(i).getGoal() + "'";
+                            Log.d("index", adapter.getItem(i).getGoal());
+                            db.execSQL(SQLdelete);
+
+                            //if(listview.isItemChecked(i);
+
+                            //adapter.removeItem(1);
+                        }
+                    }
+                    db.close();
+                }
                 // 모든 선택 상태 초기화.
                 listview.clearChoices() ;
                 Refresh_Fragment();

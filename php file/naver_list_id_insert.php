@@ -29,11 +29,11 @@
 
                 if($stmt->execute())
                 {
-                    $successMSG = "새로운 사용자를 추가했습니다.";
+                    $successMSG = "새로운 리스트를 추가했습니다.";
                 }
                 else
                 {
-                    $errMSG = "사용자 추가 에러";
+                    $errMSG = "리스트 추가 에러";
                 }
 
             } catch(PDOException $e) {

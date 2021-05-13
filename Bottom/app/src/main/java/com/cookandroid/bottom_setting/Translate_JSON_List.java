@@ -7,18 +7,18 @@ import org.json.JSONObject;
 
 public class Translate_JSON_List {
 
-    JSONObject Object;
-    String info;
-    JSONObject cleanObject;
-    String Title;
-    String List_Term_Start;
-    String List_Term_End;
-    String List_Time_Start;
-    String List_Time_End;
-    String List_Level;
-    String List_Category;
-    String List_Detail;
-    String List_Degree_Goal;
+    private JSONObject Object;
+    private String info;
+    private JSONObject cleanObject;
+    private String Title;
+    private String List_Term_Start;
+    private String List_Term_End;
+    private String List_Time_Start;
+    private String List_Time_End;
+    private String List_Level;
+    private String List_Category;
+    private String List_Detail;
+    private String List_Degree_Goal;
 
     Translate_JSON_List(String a) throws JSONException {
         try {

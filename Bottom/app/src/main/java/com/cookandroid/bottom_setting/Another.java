@@ -1,6 +1,8 @@
 package com.cookandroid.bottom_setting;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +15,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import org.json.JSONException;
-import org.w3c.dom.Text;
 
 import java.util.concurrent.ExecutionException;
 
 public class Another extends Fragment implements View.OnClickListener{
 
-    ImageView ProfilePhoto;
+    public static ImageView ProfilePhoto;
+    public static Drawable photo;
 
     // ProfileBox 텍스트 뷰
     TextView ProfileBox;
@@ -75,12 +77,14 @@ public class Another extends Fragment implements View.OnClickListener{
                     e.printStackTrace();
                     nickname = null;
                     gender = null;
+                    photo = getResources().getDrawable(R.drawable.id);
                 }
             }
             // Naver 아이디로 로그인하는 경우가 아닐 경우
             else {
                 nickname = null;
                 gender = null;
+                photo = getResources().getDrawable(R.drawable.id);
             }
         }
 
@@ -88,7 +92,7 @@ public class Another extends Fragment implements View.OnClickListener{
 
         // ProfilePhoto에 Profile 정보 표시
         ProfilePhoto = fv.findViewById(R.id.imageView);
-        // ProfilePhoto.setBackground(getResources().getDrawable(R.drawable.o));
+        ProfilePhoto.setImageDrawable(photo);
 
         // ProfileBox에 Profile 정보 표시
         ProfileBox = fv.findViewById(R.id.textView);
@@ -98,9 +102,9 @@ public class Another extends Fragment implements View.OnClickListener{
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v) { }
 
-    }
+    public static void setPhoto (Drawable newProfilePhoto){ photo = newProfilePhoto; }
 
     public static void setGender (String newGender){
         gender = newGender;

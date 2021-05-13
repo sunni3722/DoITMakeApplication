@@ -3,6 +3,11 @@
     package="com.cookandroid.bottom_setting">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <!-- camera, gallery -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:usesCleartextTraffic="true"
@@ -11,7 +16,8 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_launcher_foreground"
         android:supportsRtl="true"
-        android:theme="@style/Basic">
+        android:theme="@style/Basic"
+        android:requestLegacyExternalStorage="true">
         <activity android:name=".MainActivity"/>
         <activity android:name=".LoginActivity">
             <intent-filter>
@@ -32,6 +38,17 @@
         <activity android:name=".Another_Account"/>
         <activity android:name=".Another_Account_Find_Password"/>
         <activity android:name=".Another_Account_Set_Nickname"/>
+        <activity android:name=".Another_Account_Set_Photo"/>
+        <provider
+            android:authorities="com.example.bottom"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

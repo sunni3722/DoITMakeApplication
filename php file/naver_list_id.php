@@ -13,7 +13,7 @@ $android = strpos($_SERVER['HTTP_USER_AGENT'], "Android");
 
 if ($id != "" ){ 
 
-    $sql="select * from naver_list_id where id='$id'";
+    $sql="select * from naver_list_id where id='$id' order by list_id";
     $stmt = $con->prepare($sql);
     $stmt->execute();
  

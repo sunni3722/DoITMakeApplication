@@ -31,7 +31,7 @@ if ($id != "" ){
 
             array_push($data, 
                 array('id'=>$row["id"],
-	  'nickname'=>$row["nickname"],
+	  		'nickname'=>$row["nickname"],
                 'gender'=>$row["gender"],
                 'level'=>$row["level"],
 	  'exp'=>$row["exp"]
