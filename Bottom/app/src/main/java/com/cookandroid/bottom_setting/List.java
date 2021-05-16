@@ -20,10 +20,18 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import org.json.JSONException;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
@@ -35,11 +43,16 @@ public class List extends Fragment {
     String id;
     String find;
     Bundle bundle;
+    String title;
+    String start;
+    String end;
+    String detail;
 
     // ID & List_ID 받아오기
     String[] List_ID;
     String final_list_id;
     int length;
+    //List fileList = new List();
 
     //List_ID로 List Data 받아오기
     selectDatabase_list data_list[];
@@ -195,26 +208,15 @@ public class List extends Fragment {
                 }
 
             }
-
+            else {
+                load_values(adapter);
+            }
         }
-
-        // Naver Login이 아닌 경우 DB에서 가져오기
-        else {
-            load_values(adapter);
-        }
-
-        // add button에 대한 이벤트 처리. (미완성)
         ImageButton addButton = (ImageButton) view.findViewById(R.id.add);
         addButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-
-                Refresh_Fragment();
-                //startActivity(intent);//액티비티 띄우기
-
-                startActivityForResult(intent, 0);
+                startActivity(intent);//액티비티 띄우기
             }
-
-
         });
 
         // delete button에 대한 이벤트 처리. (미완성)

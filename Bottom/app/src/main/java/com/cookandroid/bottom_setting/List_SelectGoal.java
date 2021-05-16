@@ -39,7 +39,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
-
 import static com.cookandroid.bottom_setting.MainActivity.List_DB;
 
 public class List_SelectGoal extends AppCompatActivity {
@@ -47,10 +46,17 @@ public class List_SelectGoal extends AppCompatActivity {
     // 데이터 베이스 저장
     private DatabaseReference databaseReference;
     private String id;
-    private String title1;
-    private String term_start;
-    private String term_end;
-    private String degree;
+    private String title;
+    private String list_term_start;
+    private String list_term_end;
+    private String list_time_start;
+    private String list_time_end;
+    private String list_level;
+    private String list_category;
+    private String list_degree_goal;
+    private String list_detail;
+    private String uid;
+
 
 
     // 네이버 로그인 정보
@@ -107,7 +113,10 @@ public class List_SelectGoal extends AppCompatActivity {
         TextView textView=(TextView)findViewById(R.id.textView2);
         Button save=(Button)findViewById(R.id.save);
         Button cancle=(Button)findViewById(R.id.cancel);
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
+        uid=user.getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child(uid).child("Data");
+
 
         // WebServer와 통신하여 list ID 확인
         String IP = getString(R.string.web_IP);
@@ -224,36 +233,19 @@ public class List_SelectGoal extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"목표를 입력하지 않았습니다.",Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    // 파이어베이스로 로그인 했을 경우
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    if (user != null){
-                        id=user.getEmail();
-                        title1 = goal.getText().toString();
-                        term_start = editstartdate.getText().toString();
-                        term_end = editenddate.getText().toString();
-                        degree = "0%";
-                        writeNewPost(true);
-                    }
-                    else {
-                        id = "null";
-                        title1 = goal.getText().toString();
-                        term_start = editstartdate.getText().toString();
-                        term_end = editenddate.getText().toString();
-                        degree = "0%";
-                        writeNewPost(true);
-                    }
+                    
 
                     SQLiteDatabase db = List_DB.getWritableDatabase();
 
-                    String title = goal.getText().toString();
-                    String list_term_start = editstartdate.getText().toString();
-                    String list_term_end = editenddate.getText().toString();
-                    String list_time_start = editstrattime.getText().toString();
-                    String list_time_end = editendtime.getText().toString();
-                    String list_level = "6";
-                    String list_category = category.getText().toString();
-                    String list_detail = "";
-                    String list_degree_goal = "9";
+                    title = goal.getText().toString();
+                    list_term_start = editstartdate.getText().toString();
+                    list_term_end = editenddate.getText().toString();
+                    list_time_start = editstrattime.getText().toString();
+                    list_time_end = editendtime.getText().toString();
+                    list_level = "6";
+                    list_category = category.getText().toString();
+                    list_detail = "";
+                    list_degree_goal = "9";
 
                     String sqlInsert = List_DB_Make.SQL_INSERT +
                             " (" +
@@ -272,7 +264,6 @@ public class List_SelectGoal extends AppCompatActivity {
 
                     // JSON 생성
                     JSONObject list = new JSONObject();     // JSON 오브젝트
-
                     try {
 
                         list.put("title", title);    // list 부분 생성 시작
@@ -291,7 +282,7 @@ public class List_SelectGoal extends AppCompatActivity {
                     Log.e("json", "list.json : " + list.toString());
 
                     String insert_contents = list.toString();
-
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     // 네이버로 로그인 했을 경우
                     if (naver_id != null) {
 
@@ -316,6 +307,14 @@ public class List_SelectGoal extends AppCompatActivity {
                         insert_data_list.execute(insert_final_list_id, insert_contents);
                     }
 
+
+                    else if ((user != null)&&(FirebaseAuth.getInstance().getCurrentUser() != null)){
+                        //파이어베이스로 로그인 한 경우
+                        id=user.getEmail();
+                        writeNewPost(true);
+
+                    }
+
                     Intent intent = new Intent(getApplication(),List.class);
                     setResult(Activity.RESULT_OK,intent);
 
@@ -323,7 +322,7 @@ public class List_SelectGoal extends AppCompatActivity {
 
                     finish();
                 }
-            }
+            };
         });
         //취소 버튼 눌렀을 때
         cancle.setOnClickListener(new View.OnClickListener() {
@@ -418,10 +417,12 @@ public class List_SelectGoal extends AppCompatActivity {
         Map<String, Object> data = null;
 
         if(add){
-            FirebasePost_data user = new FirebasePost_data(id,title1,term_start,term_end,degree);
+
+            FirebasePost_data user = new FirebasePost_data(id,title,list_term_start,list_term_end,list_time_start,list_time_end,
+                    list_level,list_category,list_detail,list_degree_goal);
             data = user.toMap();
         }
-        childUpdates.put("/goal_data/" + title1, data);
+        childUpdates.put(title, data);
         databaseReference.updateChildren(childUpdates);
     }
 }

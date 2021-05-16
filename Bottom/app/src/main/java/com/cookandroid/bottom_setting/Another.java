@@ -14,6 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import org.json.JSONException;
 
 import java.util.concurrent.ExecutionException;
@@ -86,6 +89,12 @@ public class Another extends Fragment implements View.OnClickListener{
                 gender = null;
                 photo = getResources().getDrawable(R.drawable.id);
             }
+        }
+        else if (FirebaseAuth.getInstance().getCurrentUser() != null){
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            nickname = user.getEmail();
+            gender = "";
+            photo = getResources().getDrawable(R.drawable.id);
         }
 
         View fv = inflater.inflate(R.layout.another, container, false);
