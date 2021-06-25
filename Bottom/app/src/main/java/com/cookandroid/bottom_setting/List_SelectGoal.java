@@ -113,9 +113,6 @@ public class List_SelectGoal extends AppCompatActivity {
         TextView textView=(TextView)findViewById(R.id.textView2);
         Button save=(Button)findViewById(R.id.save);
         Button cancle=(Button)findViewById(R.id.cancel);
-        FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
-        uid=user.getUid();
-        databaseReference = FirebaseDatabase.getInstance().getReference().child(uid).child("Data");
 
 
         // WebServer와 통신하여 list ID 확인
@@ -124,7 +121,7 @@ public class List_SelectGoal extends AppCompatActivity {
         // intent로 정보 받아 naver 로그인인지 확인
         Intent intent_main = new Intent(this.getIntent());
         naver_id = intent_main.getStringExtra("id");
-
+        // Naver의 경우
         if (naver_id != null) {
             // 이용자의 고유 Naver ID 값을 이용해 list_id 정보 불러오기
             selectDatabase_list_id list_id = new selectDatabase_list_id(IP, null, getApplicationContext());
@@ -156,6 +153,13 @@ public class List_SelectGoal extends AppCompatActivity {
                 naver_list_count = Long.toString(long_naver_list_count);
             }
         }
+        // FireBase의 경우
+        else {
+            FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
+            uid=user.getUid();
+            databaseReference = FirebaseDatabase.getInstance().getReference().child(uid).child("Data");
+        }
+
         //시작 날짜 클릭 시
         editstartdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -233,9 +237,6 @@ public class List_SelectGoal extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"목표를 입력하지 않았습니다.",Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    
-
-                    SQLiteDatabase db = List_DB.getWritableDatabase();
 
                     title = goal.getText().toString();
                     list_term_start = editstartdate.getText().toString();
@@ -260,8 +261,6 @@ public class List_SelectGoal extends AppCompatActivity {
                             "'" +   list_degree_goal+ "'" +
                             ")" ;
 
-                    db.execSQL(sqlInsert) ;
-
                     // JSON 생성
                     JSONObject list = new JSONObject();     // JSON 오브젝트
                     try {
@@ -279,7 +278,6 @@ public class List_SelectGoal extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Log.e("json", "list.json : " + list.toString());
 
                     String insert_contents = list.toString();
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -306,19 +304,16 @@ public class List_SelectGoal extends AppCompatActivity {
                         InsertData_list insert_data_list = new InsertData_list(IP, null, getApplicationContext());
                         insert_data_list.execute(insert_final_list_id, insert_contents);
                     }
-
-
-                    else if ((user != null)&&(FirebaseAuth.getInstance().getCurrentUser() != null)){
-                        //파이어베이스로 로그인 한 경우
-                        id=user.getEmail();
+                    //파이어베이스로 로그인 한 경우
+                    else if ((user != null)&&(FirebaseAuth.getInstance().getCurrentUser() != null)) {
+                        
+                        id = user.getEmail();
                         writeNewPost(true);
 
                     }
 
                     Intent intent = new Intent(getApplication(),List.class);
                     setResult(Activity.RESULT_OK,intent);
-
-                    db.close();
 
                     finish();
                 }

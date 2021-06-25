@@ -48,10 +48,25 @@ public class History extends Fragment {
     String List_Detail[];
     String List_Degree_Goal[];
 
+    // List Detail 확인용 List
+    String List_Detail_List_ID[];
+    String List_Detail_Title[];
+    String List_Detail_Term_Start[];
+    String List_Detail_Term_End[];
+    String List_Detail_Time_Start[];
+    String List_Detail_Time_End[];
+    String List_Detail_Level[];
+    String List_Detail_Category[];
+    String List_Detail_Detail[];
+    String List_Detail_Degree_Goal[];
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.history, container, false);
+
+        // List Detail 전용 변수 (Naver)
+        int a = 0;
 
         final ListView listview ;
         //코드를 잘 못짜서 List_Custom~~ 을 불러와서 사용
@@ -116,6 +131,18 @@ public class History extends Fragment {
                 List_Category = new String[length];
                 List_Detail = new String[length];
                 List_Degree_Goal = new String[length];
+
+                List_Detail_List_ID = new String[length];
+                List_Detail_Title = new String[length];
+                List_Detail_Term_Start = new String[length];
+                List_Detail_Term_End = new String[length];
+                List_Detail_Time_Start = new String[length];
+                List_Detail_Time_End = new String[length];
+                List_Detail_Level = new String[length];
+                List_Detail_Category = new String[length];
+                List_Detail_Detail = new String[length];
+                List_Detail_Degree_Goal = new String[length];
+
                 Translate_JSON_List user_list_data[] = new Translate_JSON_List[length];
                 for (int i = 0; i < length; i++) {
                     data_list[i] = new selectDatabase_list(IP, null, getContext());
@@ -180,6 +207,17 @@ public class History extends Fragment {
                     // 제목, 시작기간, 끝난 기간, 디테일 , 퍼센트
                     if (total > 100 || total < 0) {
                         adapter.addItem(Title[i], List_Term_Start[i], List_Term_End[i], List_Detail[i], sign);
+                        List_Detail_List_ID[a] = List_ID[i];
+                        List_Detail_Title[a] = Title[i];
+                        List_Detail_Term_Start[a] = List_Term_Start[i];
+                        List_Detail_Term_End[a] = List_Term_End[i];
+                        List_Detail_Time_Start[a] = List_Time_Start[i];
+                        List_Detail_Time_End[a] = List_Time_End[i];
+                        List_Detail_Level[a] = List_Level[i];
+                        List_Detail_Category[a] = List_Category[i];
+                        List_Detail_Detail[a] = List_Detail[i];
+                        List_Detail_Degree_Goal[a] = List_Degree_Goal[i];
+                        a++;
                     }
                 }
             }
@@ -203,13 +241,31 @@ public class History extends Fragment {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
-                // get item
-                List_ListviewItem item = (List_ListviewItem) parent.getItemAtPosition(position);
 
-                String Title = item.getGoal();
-                Intent intent = new Intent(getActivity(), List_Detail.class);
-                intent.putExtra("Title", Title);
-                startActivity(intent);
+                // Naver Login일 경우
+                if (bundle != null) {
+                    Intent intent = new Intent(getActivity(), List_Detail.class);
+                    intent.putExtra("id", List_Detail_List_ID[position]);
+                    intent.putExtra("Title", List_Detail_Title[position]);
+                    intent.putExtra("Term_Start", List_Detail_Term_Start[position]);
+                    intent.putExtra("Term_End", List_Detail_Term_End[position]);
+                    intent.putExtra("Time_Start", List_Detail_Time_Start[position]);
+                    intent.putExtra("Time_End", List_Detail_Time_End[position]);
+                    intent.putExtra("Level", List_Detail_Level[position]);
+                    intent.putExtra("Category", List_Detail_Category[position]);
+                    intent.putExtra("Detail", List_Detail_Detail[position]);
+                    intent.putExtra("Degree_Goal", List_Detail_Degree_Goal[position]);
+                    startActivity(intent);
+                }
+                else {
+                    // get item
+                    List_ListviewItem item = (List_ListviewItem) parent.getItemAtPosition(position);
+                    String Title = item.getGoal();
+
+                    Intent intent = new Intent(getActivity(), List_Detail.class);
+                    intent.putExtra("Title", Title);
+                    startActivity(intent);
+                }
 
                 // TODO : use item data.
             }

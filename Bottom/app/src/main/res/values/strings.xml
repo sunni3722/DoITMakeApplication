@@ -67,7 +67,7 @@
     <string name="naver_google">Or</string>
 
     <!--Web Server-->
-    <string name="web_IP">119.197.127.93 </string>
+    <string name="web_IP"></string>
 
 
 </resources>

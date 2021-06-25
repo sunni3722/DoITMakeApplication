@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
             home.setArguments(bundle);
             history.setArguments(bundle);
             another.setArguments(bundle);
+            statistics.setArguments(bundle);
         }
 
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, home).commit();
